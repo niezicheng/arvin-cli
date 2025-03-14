@@ -1,21 +1,23 @@
 {
   "name": "arvin-cli",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
   "bin": {
     "arvin-cli": "bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c rollup.config.mjs"
+    "build": "rm -rf ./dist && rollup -c rollup.config.mjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
-  "type": "module",
   "devDependencies": {
     "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
     "@types/figlet": "^1.7.0",
     "@types/fs-extra": "^11.0.4",
     "@types/lodash-es": "^4.17.12",

@@ -5,24 +5,9 @@ import axios from "axios";
 import { gt } from "lodash-es";
 import chalk from "chalk";
 import { templateInfo } from "../const";
-import { log, clone } from "../utils";
+import { log, clone, selectConfirm } from "../utils";
 // import { name as packageName, version } from "../../package.json";
 import { ITemplateInfo } from "../types";
-
-/**
- * 判断是否覆盖原文件
- * @param name 文件名称
- * @returns
- */
-export const isOverWrite = async (name: string) => {
-  return await select({
-    message: `文件 ${name} 已存在, 是否覆盖?`,
-    choices: [
-      { name: "是", value: true },
-      { name: "否", value: false },
-    ],
-  });
-};
 
 /**
  * 检测版本更新
@@ -65,8 +50,8 @@ export default async function create(name: string) {
   // 判断文件是否存在, 存在则询问是否覆盖
   const filePath = path.resolve(process.cwd(), name);
   if (fs.existsSync(filePath)) {
-    // 覆盖原文件
-    const run = await isOverWrite(String(name));
+    // 询问是否覆盖原文件
+    const run = await selectConfirm(`文件 ${name} 已存在, 是否覆盖?`);
     if (run) {
       // 删除原文件
       await fs.remove(filePath);

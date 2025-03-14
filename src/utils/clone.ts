@@ -6,9 +6,9 @@ import path from "path";
 import { spawn } from "child_process";
 import ora from "ora";
 import fs from "fs-extra";
-
 import { simpleGitOptions } from "../const";
 import { log } from "./log";
+import { selectConfirm } from "./helper";
 
 /**
  * 下载代码并展示预估时间进度条
@@ -137,10 +137,13 @@ export const clone = async (
     log.info(`${chalk.yellow("pnpm")} run dev`);
 
     goodPrinter();
-    // 安装依赖
-    await installDependencies(name);
-    // 运行项目
-    await runProject(name);
+    const isInstallDeps = await selectConfirm(`是否安装需要安装依赖？`);
+    if (isInstallDeps) {
+      // 安装依赖
+      await installDependencies(name);
+      // 运行项目
+      await runProject(name);
+    }
   } catch (err: any) {
     log.error("下载失败");
     log.error(String(err));
