@@ -4,18 +4,21 @@ import path from "path";
 import axios from "axios";
 import { gt } from "lodash-es";
 import chalk from "chalk";
-import { templateInfo } from "../const";
+import {
+  templateInfo,
+  // packageName,
+  // packageVersion
+} from "../const";
 import { log, clone, selectConfirm } from "../utils";
-// import { name as packageName, version } from "../../package.json";
 import { ITemplateInfo } from "../types";
 
 /**
  * 检测版本更新
- * @param packageName 包名称
+ * @param name 包名称
  * @param curVersion 当前版本
  */
-export const checkVersion = async (packageName: string, curVersion: string) => {
-  const npmUrl = `https://registry.npmjs.org/${packageName}/latest`;
+export const checkVersion = async (name: string, curVersion: string) => {
+  const npmUrl = `https://registry.npmjs.org/${name}/latest`;
 
   try {
     const { data } = await axios.get(npmUrl);
@@ -23,13 +26,11 @@ export const checkVersion = async (packageName: string, curVersion: string) => {
     const isNeedUpdate = gt(latestVersion, curVersion);
     if (isNeedUpdate) {
       log.info(
-        `-----检测到 arvin-cli 最新版:${chalk.blueBright(
+        `-----检测到 ${name} 最新版:${chalk.blueBright(
           latestVersion
         )} 当前版本:${chalk.blueBright(curVersion)} ~`
       );
-      log.info(
-        `可使用 ${chalk.yellow("pnpm")} install arvin-cli@latest 更新 ~`
-      );
+      log.info(`可使用 ${chalk.yellow("pnpm")} install ${name}@latest 更新 ~`);
     }
   } catch (err) {
     log.error(err as string);
@@ -73,7 +74,7 @@ export default async function create(name: string) {
   );
 
   // 检测版本更新【需发版到 npm 上】
-  // await checkVersion(packageName, version);
+  // await checkVersion(packageName, packageVersion);
 
   // 选择模板
   const templateName = await select({

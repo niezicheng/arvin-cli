@@ -1,5 +1,9 @@
 import { SimpleGitOptions } from "simple-git";
 import { ITemplateInfo } from "./types";
+export {
+  name as packageName,
+  version as packageVersion,
+} from "../package.json";
 
 export const templateInfo: Map<string, ITemplateInfo> = new Map([
   [

@@ -6,7 +6,7 @@ import path from "path";
 import { spawn } from "child_process";
 import ora from "ora";
 import fs from "fs-extra";
-import { simpleGitOptions } from "../const";
+import { packageName, simpleGitOptions } from "../const";
 import { log } from "./log";
 import { selectConfirm } from "./helper";
 
@@ -24,7 +24,7 @@ export const logger = createLogger({
 });
 
 export const goodPrinter = () => {
-  const data = figlet.textSync("欢迎使用 arvin-cli 脚手架", {
+  const data = figlet.textSync(`欢迎使用 ${packageName} 脚手架`, {
     font: "Standard",
   });
   console.log(chalk.rgb(40, 156, 193).visible(data));
@@ -126,7 +126,7 @@ export const clone = async (
     // 下面就是一些相关的提示
     console.log();
     console.log(chalk.blueBright(`==================================`));
-    console.log(chalk.blueBright(`=== 欢迎使用 arvin-cli 脚手架 ===`));
+    console.log(chalk.blueBright(`=== 欢迎使用 ${packageName} 脚手架 ===`));
     console.log(chalk.blueBright(`==================================`));
     console.log();
 
