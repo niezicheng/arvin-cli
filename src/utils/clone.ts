@@ -1,34 +1,14 @@
 import simpleGit, { SimpleGit } from "simple-git";
 import chalk from "chalk";
-import createLogger from "progress-estimator";
-import figlet from "figlet";
 import path from "path";
 import { spawn } from "child_process";
 import ora from "ora";
 import fs from "fs-extra";
 import { packageName, simpleGitOptions } from "../const";
 import { log } from "./log";
-import { selectConfirm } from "./helper";
+import { selectConfirm, createLoggerSpinner, welcomePrinter } from "./helper";
 
-/**
- * 下载代码并展示预估时间进度条
- */
-export const logger = createLogger({
-  // 初始化进度条
-  spinner: {
-    interval: 300, // 变换时间 ms
-    frames: ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"].map((item) =>
-      chalk.blue(item)
-    ), // 设置加载动画
-  },
-});
-
-export const goodPrinter = () => {
-  const data = figlet.textSync(`欢迎使用 ${packageName} 脚手架`, {
-    font: "Standard",
-  });
-  console.log(chalk.rgb(40, 156, 193).visible(data));
-};
+const logger = createLoggerSpinner();
 
 // 安装项目依赖
 const installDependencies = (name: string): Promise<void> => {
@@ -136,8 +116,10 @@ export const clone = async (
     log.info(`${chalk.yellow("pnpm")} install`);
     log.info(`${chalk.yellow("pnpm")} run dev`);
 
-    goodPrinter();
-    const isInstallDeps = await selectConfirm(`是否安装需要安装依赖？`);
+    welcomePrinter();
+    const isInstallDeps = await selectConfirm(
+      `是否安装需要安装依赖并启动项目？依赖安装可能耗时较长`
+    );
     if (isInstallDeps) {
       // 安装依赖
       await installDependencies(name);

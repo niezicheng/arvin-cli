@@ -1,25 +1,17 @@
 import process from "child_process";
 import chalk from "chalk";
-import ora from "ora";
 import os from "os";
 import { packageName } from "../const";
+import { oraSpinner } from "../utils";
 
-const spinner = ora({
-  text: `${packageName} 正在更新`,
-  spinner: {
-    interval: 300,
-    frames: ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"].map((item) =>
-      chalk.blue(item)
-    ), // 设置加载动画
-  },
-});
+const spinner = oraSpinner(`${packageName} 正在更新`);
 
 export default function update() {
   spinner.start();
 
   process.exec(
     `npm install ${packageName}@latest -g`,
-    (error: any, _stdout: any, stderr: any) => {
+    (error, _stdout, stderr) => {
       spinner.stop();
 
       // 判断操作系统类型
